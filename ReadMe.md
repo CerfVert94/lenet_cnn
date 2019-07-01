@@ -11,4 +11,4 @@ make conv
 
 
 'char' rule compiles a program that runs the neural network based on char type weights<br/>
-=> Failed
+=> Failure
