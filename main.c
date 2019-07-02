@@ -6,7 +6,7 @@
 #include <string.h>
 #include <malloc.h>
 #include "neural_network.h"
-#include "data.h"
+//#include "data.h"
 
 #if defined(_CHAR_WEIGHT_)
 	#include "char_weight.h"
@@ -19,7 +19,7 @@
 
 void write_weights(FILE *ptr_file1, FILE *ptr_file2, const char* layer_name, float *Layer_Weights_CPU, int size);
 void read_data(const char *, char *Input);
-void write_data(const char *, char **Input);
+void write_data(char (*)[841], int size);
 
 #ifndef _CONV_WEIGHTS_
 int evaluate(char *Input)
@@ -56,6 +56,8 @@ int evaluate(char *Input)
 /* Main function. */
 int main(void){
 	#if !defined(_CONV_WEIGHTS_)
+	char Input[10][29*29] = {};
+
 	//Load gray scale image.
 	const char *bmp_path[10] = {"./Data/0.bmp",
 								"./Data/1.bmp",
@@ -90,6 +92,7 @@ int main(void){
 		}
 		
 	}
+	write_data(Input, 10);
 	fprintf(stdout, "Success\n");
 	#else
 	#define NB_WEIGHTS_LAYER1 ((5 * 5 + 1) * 6)
@@ -182,5 +185,43 @@ void read_data(const char * path, char *Input) {
 			idx++;
 		}
 	}
+	fclose(ptr_file);
+}
+
+void write_data(char (*Input)[841], int size) 
+{
+	FILE *ptr_file;
+	int i, j, k;
+	// Create a new data header file.
+	ptr_file = fopen("data.h", "wb");
+	// Null pointer signifies an error :
+	if (!ptr_file) {
+		fprintf(stdout, "Failed creating new header files\n");
+		exit(EXIT_FAILURE);
+	}
+	fprintf(ptr_file,	"#ifndef _DATA_H_\n"\
+						"#define	_DATA_H_\n"\
+						"\tchar Input[10][29*29] = {");
+	for (i = 0; i < size; i++) {
+		fputs("{\n\t\t", ptr_file);
+		for (j = 0; j < IMG_HEIGHT; j++) {
+			for (k = 0; k < IMG_WIDTH; k++) {				
+				fputc('0' + Input[i][j * IMG_HEIGHT + k], ptr_file);
+				if (j == (IMG_HEIGHT - 1) && k == (IMG_WIDTH - 1)) 
+					fputs("}", ptr_file);
+				else {
+					fputc(',', ptr_file);
+				}
+				
+			}
+			if (j < (IMG_HEIGHT - 1))
+				fputs("\n\t\t", ptr_file);
+		}
+		if (i < (size - 1))
+			fputs(",\n\t\t", ptr_file);
+		
+	}					
+	fputs("};\n", ptr_file);
+	fprintf(ptr_file, "#endif /* DATA_H_ */");
 	fclose(ptr_file);
 }
