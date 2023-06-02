@@ -30,16 +30,16 @@ void calculateLayer3(float* Layer2_Neurons_CPU, WEIGHT_TYPE* Layer2_Weights_CPU,
 	for( i=0;i<50;i++)
 		for(j=0;j<5;j++)
 			for(k=0;k<5;k++){
-				somme = Layer2_Weights_CPU[26*6*i];
+				somme = Layer2_Weights_CPU[(25*6+1)*i];
 
 				for( m=0;m<5;m++)
 					for( n=0;n<5;n++){
-						somme += Layer2_Weights_CPU[26*6*i+1+6*(n+5*m)	] * Layer2_Neurons_CPU[13*13*0+13*(2*j+m)+(2*k+n)];
-						somme += Layer2_Weights_CPU[26*6*i+1+6*(n+5*m)+1] * Layer2_Neurons_CPU[13*13*1+13*(2*j+m)+(2*k+n)];
-						somme += Layer2_Weights_CPU[26*6*i+1+6*(n+5*m)+2] * Layer2_Neurons_CPU[13*13*2+13*(2*j+m)+(2*k+n)];
-						somme += Layer2_Weights_CPU[26*6*i+1+6*(n+5*m)+3] * Layer2_Neurons_CPU[13*13*3+13*(2*j+m)+(2*k+n)];
-						somme += Layer2_Weights_CPU[26*6*i+1+6*(n+5*m)+4] * Layer2_Neurons_CPU[13*13*4+13*(2*j+m)+(2*k+n)];
-						somme += Layer2_Weights_CPU[26*6*i+1+6*(n+5*m)+5] * Layer2_Neurons_CPU[13*13*5+13*(2*j+m)+(2*k+n)];
+						somme += Layer2_Weights_CPU[(25*6+1)*i+1+6*(n+5*m)	] * Layer2_Neurons_CPU[13*13*0+13*(2*j+m)+(2*k+n)];
+						somme += Layer2_Weights_CPU[(25*6+1)*i+1+6*(n+5*m)+1] * Layer2_Neurons_CPU[13*13*1+13*(2*j+m)+(2*k+n)];
+						somme += Layer2_Weights_CPU[(25*6+1)*i+1+6*(n+5*m)+2] * Layer2_Neurons_CPU[13*13*2+13*(2*j+m)+(2*k+n)];
+						somme += Layer2_Weights_CPU[(25*6+1)*i+1+6*(n+5*m)+3] * Layer2_Neurons_CPU[13*13*3+13*(2*j+m)+(2*k+n)];
+						somme += Layer2_Weights_CPU[(25*6+1)*i+1+6*(n+5*m)+4] * Layer2_Neurons_CPU[13*13*4+13*(2*j+m)+(2*k+n)];
+						somme += Layer2_Weights_CPU[(25*6+1)*i+1+6*(n+5*m)+5] * Layer2_Neurons_CPU[13*13*5+13*(2*j+m)+(2*k+n)];
 
 					}
 				Layer3_Neurons_CPU[5*5*i+5*j+k] = SIGMOID(CONV(somme));
